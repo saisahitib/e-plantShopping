@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { addItem } from './store/cartSlice'
+import { addItem } from './CartSlice'
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
@@ -287,11 +287,12 @@ function ProductList({ onHomeClick }) {
                 <div className="product-grid">
                     {plantsArray.map((plantCategory) => (
                         <div className="category">
-                            <h1> plantCategory.category </h1>
+                            <h1> {plantCategory.category} </h1>
                         {plantCategory.plants.map((plant) => (
                             <div className="plant-item">
+                                <h2>{plant.name}</h2>
                                 <img src={plant.image}/>
-                                <body>Description{plant.description}</body>
+                                <body>{plant.description}</body>
                                 <h3>Cost: {plant.cost}</h3>
                                 <button 
                                     onClick={() => handleAddToCart(plant)}>
