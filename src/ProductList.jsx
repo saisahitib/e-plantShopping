@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice'
 function ProductList({ onHomeClick }) {
+    const dispatch = useDispatch() 
+
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
@@ -263,6 +266,11 @@ function ProductList({ onHomeClick }) {
         }));
     }
 
+    const inCart = (plant) => {
+        console.log(`${plant.name}: ${addedToCart[plant.name]}`)
+        return addedToCart[plant.name];
+    }
+
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -288,20 +296,28 @@ function ProductList({ onHomeClick }) {
                     {plantsArray.map((plantCategory) => (
                         <div className="category">
                             <h1> {plantCategory.category} </h1>
-                        {plantCategory.plants.map((plant) => (
-                            <div className="plant-item">
-                                <h2>{plant.name}</h2>
-                                <img src={plant.image}/>
-                                <body>{plant.description}</body>
-                                <h3>Cost: {plant.cost}</h3>
-                                <button 
-                                    onClick={() => handleAddToCart(plant)}>
-                                    Add to Cart
-                                </button>
-                            </div>
-                        ))}
+                            {plantCategory.plants.map((plant) => (
+                                <div className="plant-item">
+                                    <h2>{plant.name}</h2>
+                                    <img src={plant.image}/>
+                                    <body>{plant.description}</body>
+                                    <h3>Cost: {plant.cost}</h3>
+                                    <button
+                                    className="product-button"
+                                    style={{backgroundColor: inCart(plant) ? "Gray" : "Green"}}
+                                    disabled={inCart(plant) ? true : false}
+                                    onClick={()=>handleAddToCart(
+                                        {
+                                            name:plant.name,
+                                            cost:plant.cost,
+                                            image: plant.image
+                                        })}
+                                    >
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            ))}
                         </div>
-                    // ))}
                     ))}
 
                 </div>
